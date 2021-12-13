@@ -1,0 +1,37 @@
+Agregar tabulación en textarea con jQuery - fuente: https://www.srcodigofuente.es/js-snippets-javascript/tabular-en-textarea
+-----------------------------------------------------------------------------------------------------------------------------
+
+A continuación puedes ver el snippet que vigila la pulsación de la tecla tab en el interior de un textarea:
+
+$('.tab-listener').keydown(function(e) {
+ //para compatibilidad con navegadores recuperamos la tecla con keycode o which
+  var keyCode = e.keyCode || e.which;
+ 
+  if (keyCode == 9) { //código de la tecla tabular
+    e.preventDefault(); 
+  //recuperamos la posición del caracter en el que se situa el cursor
+    var start = this.selectionStart;
+    var end = this.selectionEnd;
+ 
+    // componemos el contenido del texarea: texto anterior a la seleccion + tab + texto después de la selección
+    $(this).val($(this).val().substring(0, start)
+                + "\t"
+                + $(this).val().substring(end));
+ 
+    // volvemos a colocar el puntero dónde toca
+    this.selectionStart = this.selectionEnd = start + 1;
+  }
+});
+
+¿cómo tabulamos en el textarea con javascript?
+Ahora voy a explicarte las claves de este snippet:
+
+1- En primer lugar hay que asignar la función al evento html keydown para cada uno de los textarea deseados, esto es esencial para poder comprobar cada una de las teclas que se han pulsado en el campo de texto en el que se escribe. Importante resaltar que he utilizado jQuery para asignar el evento.
+
+2- En segundo lugar es importante señalar que, para saber que se ha pulsado la tecla tabular en el interior del campo de texto, debemos recuperar el código de la tecla y comprobar que es el 9. Esto lo hacemos en las líneas 3 y 5.
+
+3- Una vez sabemos que el usuario ha pulsado la tecla tab en el textarea, detenemos la funcionalidad por defecto del evento con e.preventDefault(), así impedimos que el navegador salte al siguiente campo del formulario.
+
+4- Lo siguiente es almacenar la posición inicial y final de la selección del usuario (líneas 8 y 9) ya que puede haberse situando simplemente en un caracter o haber realizado una selección de texto y tabulado.
+Añadimos el caracter "\t", que es el encargado de tabular en html, justo en medio de la selección del usuario.
+Por último tenemos que dejar el cursor del usuario en la misma posición (start + 1). 
