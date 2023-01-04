@@ -1,0 +1,20 @@
+const message = (res, status, message, obj) => {
+    if (!obj) {
+        res.status(status).send({ code: status, message: message})
+    } else {
+        let key = Object.keys(obj)[0]
+        
+        if (message === '')
+            res.status(status).send({ code: status, [key]: obj[key] })
+        else 
+            res.status(status).send({ code: status, message: message, [key]: obj[key] })
+    }
+}
+
+//EJEMPLOS DE USO
+
+// message(res, 200, 'Post creado correctamente', {post: postStored})
+
+// message(res, 400, 'No se ha podido crear el post')
+
+// message(res, 200, '', {posts: postsStored})
